@@ -1,0 +1,44 @@
+// Stack, Memory, And Storage knowledge is required to understand this code.
+#define function updateNumberOfHorses(uint256) nonpayable returns()
+#define function readNumberOfHorses() view returns (uint256)
+
+#define constant NUMBER_OF_HORSES_STORAGE_SLOT = FREE_STORAGE_POINTER()
+
+#define macro MAIN() = takes(0) returns(0) {
+    // calldataload is an evm instruction that reads data from the calldata.
+    // calldata is the data sent with a transaction. 
+    // first 4 bytes of calldata is the function selector, and remaining are 32 bytes arguments. 
+    0x00            // offset 0
+    calldataload    // loads the first 32 bytes of calldata onto the stack, first 4 bytes is the function selector.
+    0xE0            // offset 224
+    shr             // shifts the calldata to the right by 224 bits, leaving only the function signature on the stack.
+
+    // dup1 duplicates the top item on the stack. which is the function signature in this case.
+    // eq pops the top two items from the stack and checks if they are equal. so thats why we need to use dup1, so function signature is still on the stack.
+    // eq here checks if the function signature matches the one for updateNumberOfHorses or readNumberOfHorses.
+    dup1 __FUNC_SIG(updateNumberOfHorses) eq updateJump jumpi
+    __FUNC_SIG(readNumberOfHorses) eq readJump jumpi
+
+    0x00 0x00 revert
+
+    updateJump:
+        SET_NUMBER_OF_HORSES()
+    readJump:
+        GET_NUMBER_OF_HORSES()
+}
+
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0) {
+    0x04            // offset 4
+    calldataload    // loads the first 32 bytes of calldata after the function selector, which is the argument for updateNumberOfHorses.
+    [NUMBER_OF_HORSES_STORAGE_SLOT] // pushed
+    sstore          // store the value in the storage slot for number of horses.
+    stop
+}
+
+#define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0) {
+    [NUMBER_OF_HORSES_STORAGE_SLOT] // pushed
+    sload                           // load value from [NUMBER_OF_HORSES_STORAGE_SLOT] storage slot.  
+    0x00                            // offset 0
+    mstore                          // store the value at memory offset 0
+    0x20 0x00 return                // returns 32 bytes of memory starting from offset 0
+}
