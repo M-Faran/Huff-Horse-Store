@@ -1,66 +1,110 @@
-## Foundry
+# Huff Horse Store — Low-Level EVM Mastery
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Welcome to the **Huff Horse Store** — a raw, efficient, low-level smart contract crafted in [Huff](https://docs.huff.sh). This project showcases advanced control over the EVM using Huff, a low-level language for writing highly optimized smart contracts.
 
-Foundry consists of:
+---
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Project Highlights
 
-## Documentation
+-  **Bare-metal Performance**: Optimize gas like a pro.
+-  **Opcode-Level Control**: You don’t write logic — you architect the stack.
+-  **Use Cases**: Gatekeepers, precompiled checks, deterministic deployments, storage slot hacking, and more.
 
-https://book.getfoundry.sh/
+---
 
-## Usage
+## Prerequisites
 
-### Build
+Before working with this repo, ensure you have the following installed:
 
-```shell
-$ forge build
+### System Requirements
+- Node.js (v18+ recommended)
+- Foundry (for testing & deployment)  
+  Install via:
+  ```bash
+  curl -L https://foundry.paradigm.xyz | bash
+  foundryup
+  ```
+
+### Huff Language Tooling
+
+* [Huff Compiler](https://github.com/huff-language/huffc)
+  Install via Cargo:
+
+  ```bash
+  cargo install --git https://github.com/huff-language/huff-rs --locked
+  ```
+
+* Optional: [huffmate](https://github.com/0xMacro/huffmate) for syntax highlighting & productivity
+
+---
+
+## Getting Started
+
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/M-Faran/Huff-Horse-Store.git
+cd Huff-Horse-Store
 ```
 
-### Test
+### 2. Install Dependencies
 
-```shell
-$ forge test
+If you’re using a Foundry project:
+
+```bash
+forge install
 ```
 
-### Format
+---
 
-```shell
-$ forge fmt
+## Build Contracts
+
+Compile Huff contracts using:
+
+```bash
+huffc ./src/YourContract.huff --bytecode
 ```
 
-### Gas Snapshots
+Or for Foundry integration (in `foundry.toml`):
 
-```shell
-$ forge snapshot
+```toml
+[profile.default]
+ffi = true
 ```
 
-### Anvil
+Then run:
 
-```shell
-$ anvil
+```bash
+forge build
 ```
 
-### Deploy
+---
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+## Project Structure
+
+```
+├── src/                    
+│   └── HorseStore.huff
+|   └── HorseStore.sol             
+├── foundry.toml
+└── README.md
 ```
 
-### Cast
+---
 
-```shell
-$ cast <subcommand>
-```
+## Advanced: Bytecode & Deconstruction
 
-### Help
+Huff lets you operate directly on:
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+* Stack manipulation
+* Memory layout
+* Storage slot access
+* Gas cost minimization
+
+Use tools like:
+
+* [evm.codes](https://www.evm.codes/)
+* `cast inspect <address> bytecode`
+* Tenderly for visualization
+
+---
