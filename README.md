@@ -62,7 +62,7 @@ forge install
 Compile Huff contracts using:
 
 ```bash
-huffc ./src/YourContract.huff --bytecode
+huffc ./src/HorseStore.huff --bytecode
 ```
 
 Or for Foundry integration (in `foundry.toml`):
